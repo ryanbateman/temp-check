@@ -5,8 +5,9 @@ const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 const app = express();
 app.use(urlencoded({ extended: false }));
+
 const router = express.Router();
-const hash = new HashMap();
+var map = new HashMap();
 const options = {timeZone: 'EST',  timeZoneName: 'short'};
 
 class Update {
@@ -20,7 +21,7 @@ class Update {
 
 router.post('/', (req, res) => {
     const newUpdate = new Update(req.body);
-    hash.set(newUpdate.number, newUpdate);
+    map.set(newUpdate.number, newUpdate);
 
     const twiml = new MessagingResponse();
     const message = twiml.message();
