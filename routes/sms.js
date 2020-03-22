@@ -3,15 +3,22 @@ const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 var router = express.Router();
 
+class Update {
+    constructor(body) {
+        this.number = body.from;
+        this.name = `~${body.from.slice(-5)}`;
+        this.temp = body.body;
+        this.timestamp = Date.now();
+    }
+}
+
 router.post('/', (req, res) => {
 
-    var body = req.body.Body;
-
+    var update = new Update(req.body);
+    
     const twiml = new MessagingResponse();
-
     const message = twiml.message();
-    message.body(`Your temperature is ${body}`);
-    message.media('https://farm8.staticflickr.com/7090/6941316406_80b4d6d50e_z_d.jpg');
+    message.body(`Updates: ${update.name} - ${update.timestamp} - ${update.temp}`);
 
     res.writeHead(200, {'Content-Type': 'text/xml'});
     res.end(twiml.toString());
