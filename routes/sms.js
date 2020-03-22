@@ -11,7 +11,7 @@ class Update {
         this.number = message.From;
         this.name = `~${message.From.slice(-4)}`;
         this.temp = message.Body;
-        this.timestamp = Date.now();
+        this.timestamp = Date.now().toLocaleString();
     }
 }
 
@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
 
     const twiml = new MessagingResponse();
     const message = twiml.message();
-    message.body(`Updates: ${update.name} - ${update.timestamp} - ${update.temp}`);
+    message.body(`Updates:\n${update.name} - ${update.timestamp} - ${update.temp}`);
 
     res.writeHead(200, {'Content-Type': 'text/xml'});
     res.end(twiml.toString());
