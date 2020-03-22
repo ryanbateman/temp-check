@@ -8,7 +8,7 @@ app.use(urlencoded({ extended: false }));
 
 const router = express.Router();
 var map = new HashMap();
-const options = {timeZone: 'EST',  timeZoneName: 'short'};
+const options = {timeZone: 'UTC',  timeZoneName: 'short'};
 
 class Update {
     constructor(message) {
@@ -20,6 +20,7 @@ class Update {
 }
 
 router.post('/', (req, res) => {
+
     const newUpdate = new Update(req.body);
     map.set(newUpdate.number, newUpdate);
 
@@ -27,12 +28,11 @@ router.post('/', (req, res) => {
     const message = twiml.message();
 
     var responseText = `Updates:\n`;
-    for (const key in hash) {
-        const update = hash.get(key);
+    map.forEach(function (update, key) {
         if (key != update.number) {
             responseText += `${update.name} - ${update.timestamp} - ${update.temp}\n`
         }
-    }
+    })
     message.body(responseText);
 
     res.writeHead(200, {'Content-Type': 'text/xml'});
