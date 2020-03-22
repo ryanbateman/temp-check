@@ -3,7 +3,7 @@ const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 var router = express.Router();
 
-router.post('/sms', (req, res) => {
+router.post('/', (req, res) => {
     const twiml = new MessagingResponse();
 
     const message = twiml.message();
@@ -13,3 +13,5 @@ router.post('/sms', (req, res) => {
     res.writeHead(200, {'Content-Type': 'text/xml'});
     res.end(twiml.toString());
 });
+
+module.exports = router;
