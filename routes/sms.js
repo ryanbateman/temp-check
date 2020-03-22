@@ -5,22 +5,33 @@ const MessagingResponse = require('twilio').twiml.MessagingResponse;
 const app = express();
 app.use(urlencoded({ extended: false }));
 const router = express.Router();
+const hash = new HashMap();
+const options = {timeZone: 'EST',  timeZoneName: 'short'};
 
 class Update {
     constructor(message) {
         this.number = message.From;
         this.name = `~${message.From.slice(-4)}`;
         this.temp = message.Body;
-        this.timestamp = new Date().toLocaleString("en-US");
+        this.timestamp = new Date().toLocaleString("en-US", options);
     }
 }
 
 router.post('/', (req, res) => {
-    const update = new Update(req.body);
+    const newUpdate = new Update(req.body);
+    hash.set(newUpdate.number, newUpdate);
 
     const twiml = new MessagingResponse();
     const message = twiml.message();
-    message.body(`Updates:\n${update.name} - ${update.timestamp} - ${update.temp}`);
+
+    var responseText = `Updates:\n`;
+    for (const key in hash) {
+        const update = hash.get(key);
+        if (key != update.number) {
+            responseText += `${update.name} - ${update.timestamp} - ${update.temp}\n`
+        }
+    }
+    message.body(responseText);
 
     res.writeHead(200, {'Content-Type': 'text/xml'});
     res.end(twiml.toString());
