@@ -4,19 +4,19 @@ const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 const app = express();
 app.use(urlencoded({ extended: false }));
-var router = express.Router();
+const router = express.Router();
 
 class Update {
     constructor(message) {
         this.number = message.From;
-        this.name = message.From;
+        this.name = `~${message.From.slice(-4)}`;
         this.temp = message.Body;
         this.timestamp = Date.now();
     }
 }
 
 router.post('/', (req, res) => {
-    var update = new Update(req.body);
+    const update = new Update(req.body);
 
     const twiml = new MessagingResponse();
     const message = twiml.message();
