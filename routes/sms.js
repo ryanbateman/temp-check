@@ -2,7 +2,8 @@ const express = require('express');
 const { urlencoded } = require('body-parser');
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
-express.use(urlencoded({ extended: false }));
+const app = express();
+app.use(urlencoded({ extended: false }));
 var router = express.Router();
 
 class Update {
