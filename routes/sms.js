@@ -1,19 +1,20 @@
 const express = require('express');
+const { urlencoded } = require('body-parser');
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
+express.use(urlencoded({ extended: false }));
 var router = express.Router();
 
 class Update {
-    constructor(body) {
-        this.number = body.from;
-        this.name = body.from;
-        this.temp = body.body;
+    constructor(message) {
+        this.number = message.From;
+        this.name = message.From;
+        this.temp = message.Body;
         this.timestamp = Date.now();
     }
 }
 
 router.post('/', (req, res) => {
-
     var update = new Update(req.body);
 
     const twiml = new MessagingResponse();
