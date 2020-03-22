@@ -1,5 +1,6 @@
 const express = require('express');
 const { urlencoded } = require('body-parser');
+const HashMap = require('HashMap');
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 const app = express();
