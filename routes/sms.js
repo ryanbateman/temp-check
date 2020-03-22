@@ -6,7 +6,7 @@ var router = express.Router();
 class Update {
     constructor(body) {
         this.number = body.from;
-        this.name = `~${body.from.slice(-5)}`;
+        this.name = body.from;
         this.temp = body.body;
         this.timestamp = Date.now();
     }
@@ -15,7 +15,7 @@ class Update {
 router.post('/', (req, res) => {
 
     var update = new Update(req.body);
-    
+
     const twiml = new MessagingResponse();
     const message = twiml.message();
     message.body(`Updates: ${update.name} - ${update.timestamp} - ${update.temp}`);
