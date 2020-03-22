@@ -11,7 +11,7 @@ class Update {
         this.number = message.From;
         this.name = `~${message.From.slice(-4)}`;
         this.temp = message.Body;
-        this.timestamp = Date.now().toLocaleString();
+        this.timestamp = Date.now().toLocaleString("en-US");
     }
 }
 
