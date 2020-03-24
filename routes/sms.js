@@ -1,41 +1,65 @@
 const express = require('express');
 const { urlencoded } = require('body-parser');
-const HashMap = require('hashmap');
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
-
 const app = express();
-app.use(urlencoded({ extended: false }));
-
-const router = express.Router();
-const map = new HashMap();
 const options = {timeZone: 'UTC',  timeZoneName: 'short'};
+const admin = require('firebase-admin');
 
-class Update {
-    constructor(message) {
-        this.number = message.From;
-        this.name = `~${message.From.slice(-4)}`;
-        this.temp = message.Body;
-        this.timestamp = new Date().toLocaleString("en-US", options);
+
+app.use(urlencoded({ extended: false }));
+const router = express.Router();
+
+const db = require('../database/database');
+let updatesRef = db.collection('updates');
+
+class IncomingMessage {
+    static createFirestoreObject(message) {
+        let data = {
+            number: `${message.From}`,
+            name: `~${message.From.slice(-4)}`,
+            temp: message.Body,
+            timestamp: admin.firestore.Timestamp.fromDate(new Date())
+        }
+        return data;
     }
 }
 
 router.post('/', (req, res) => {
-
-    const newUpdate = new Update(req.body);
-    map.set(newUpdate.number, newUpdate);
-
     const twiml = new MessagingResponse();
     const message = twiml.message();
+    const incomingMessage = IncomingMessage.createFirestoreObject(req.body);
 
-    var responseText = `Updates:\n`;
-    map.forEach(function (update, key) {
-        console.log("Key: " + key + " " + update.number);
-        responseText += `${update.name} - ${update.timestamp} - ${update.temp}\n`;
+    function updateWithLatestTemperature() {
+        return db.collection('updates').doc(`${incomingMessage.number}`).set(incomingMessage);
+    }
+
+    function returnLatestUpdates() {
+        // Christ on sale, this is skipping down 3 or 4 different asynchronous transport and data layers, Javascript is literally hell
+        updatesRef.get()
+            .then(documents => {
+                var text = `Updates:\n`;
+                documents.forEach(function (doc) {
+                    if (incomingMessage.number != doc.get('id')) {
+                        text += `${doc.get('name')} - ${doc.get('timestamp').toDate().toLocaleDateString("en-US", options)} - ${doc.get('temp')}\n`;
+                    }
+                });
+                message.body(text);
+
+                res.writeHead(200, {'Content-Type': 'text/xml'});
+                res.end(twiml.toString());
+            })
+            .catch(err => {
+                console.error('Error getting documents', err);
+            });
+    }
+
+    updateWithLatestTemperature().then(ref => {
+        returnLatestUpdates();
     })
-    message.body(responseText);
+    .catch(err => {
+        console.error('Error updating document', err);
+    });;
 
-    res.writeHead(200, {'Content-Type': 'text/xml'});
-    res.end(twiml.toString());
 });
 
 module.exports = router;
