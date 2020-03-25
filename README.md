@@ -12,8 +12,8 @@ You send a simple update to the phone number:
 You receive a response from the phone number:  
 
 > UPDATES:  
-> ~BOB, 03/04 6:15pm, 37.2
-> ~ALICE, 05/04 1:47am, 34.2   
+> ~BOB, 03/04 6:15pm, 37.2  
+> ~ALICE, 05/04 1:47am, 34.2  
 > ~EVE, 01/04 11:18am, 38.1   
 
 ## Design pricinples and data privacy
