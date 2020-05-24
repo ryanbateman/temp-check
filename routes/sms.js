@@ -5,7 +5,6 @@ const app = express();
 const options = {timeZone: 'UTC',  timeZoneName: 'short'};
 const admin = require('firebase-admin');
 
-
 app.use(urlencoded({ extended: false }));
 const router = express.Router();
 
@@ -34,12 +33,11 @@ router.post('/', (req, res) => {
     }
 
     function returnLatestUpdates() {
-        // Christ on sale, this is skipping down 3 or 4 different asynchronous transport and data layers, Javascript is literally hell
         updatesRef.get()
             .then(documents => {
                 var text = `Updates:\n`;
                 documents.forEach(function (doc) {
-                    if (incomingMessage.number != doc.get('id')) {
+                    if (incomingMessage.number != doc.get('number')) {
                         text += `${doc.get('name')} - ${doc.get('timestamp').toDate().toLocaleDateString("en-US", options)} - ${doc.get('temp')}\n`;
                     }
                 });
