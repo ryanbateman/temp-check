@@ -30,7 +30,7 @@ This broad design principles behind the application:
 - Store no data, at all, whenever possible.
   - Store no phone numbers! 
   - If it _must_ store data, the data should be deleted as soon as possible.  
-  - If the data _has to_ be stored, it must be stored in as low fidelity as possible. (The service currently  stores the last few digits of the sender's number.)
+  - If the data _has to_ be stored, it must be stored in as low fidelity as possible. (The service currently  stores the last few digits of the sender's number - as such **it is currently unfit for public use**.)
 
 # Tech
 ## Key architectural decisions
