@@ -30,5 +30,6 @@ This broad design principles behind the application:
 
 # Tech
 ## Key architectural decisions
-- The application runs as a microservice that can be scaled and deployed to multiple numbers/backends/datastores easily.
+- The application runs as a microservice that can be scaled and deployed to multiple numbers/backends/datastores easily. It is currently set up to be continuously deployed using Google's Cloud services (specifically, Cloud Build, the Container Registry, and Cloud Run). Any push to this master branch will result in a new microservice being deployed.
+- The messages themselves are stored in Google Firebase. 
 - The application is based on NodeJS
