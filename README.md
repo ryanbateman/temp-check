@@ -2,8 +2,8 @@
 Temp-check is a application allows you to check in on the temperatures of the people you care about over SMS while updating others on yours. (**Note: this application is not currently deployed for public use. The code is shared here for interest and discussion's sake.**)
 
 ## How it works
-1) You SMS a phone number with your latest temperature reading
-2) In response, you receive a response with the latest updates/temperature reading of those you care about
+1) You SMS a (a Twilio-based) phone number with your latest temperature reading
+2) In response, you receive an SMS with the latest updates/temperature reading of those you care about (who have also sent their temperature)
 
 E.g.  
 You send a simple update to the phone number:  
