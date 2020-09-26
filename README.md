@@ -1,5 +1,6 @@
 # temp-check
 Temp-check is a application allows you to check in on the temperatures of the people you care about over SMS while updating others on yours. It is an idea by [Sara Pavis](https://www.sarahpavis.com/), a New York City based mechanical engineer and writer, intended as a low-tech way to keep in touch with family members and to encourage mindful checking in on group health. 
+  
 (**Note: this application is not currently deployed for public use. The code is shared here for interest and discussion's sake.**)
 
 ## How it works
